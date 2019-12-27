@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "gulp start"
+    "start": "gulp start",
+    "build": "gulp build"
   },
   "keywords": [],
   "author": "",
@@ -18,11 +19,16 @@
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
     "gulp-browserify": "^0.5.1",
+    "gulp-clean-css": "^4.2.0",
     "gulp-concat": "^2.6.1",
     "gulp-connect": "^5.7.0",
     "gulp-eslint": "^6.0.0",
     "gulp-less": "^4.0.1",
     "gulp-rename": "^2.0.0",
+    "gulp-uglify": "^3.0.2",
     "open": "^7.0.0"
+  },
+  "dependencies": {
+    "gulp-htmlmin": "^5.0.1"
   }
 }

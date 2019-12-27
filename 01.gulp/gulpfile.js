@@ -29,6 +29,9 @@ const less = require('gulp-less');
 const concat = require('gulp-concat');
 const connect = require('gulp-connect');
 const open = require('open');
+const uglify = require('gulp-uglify');
+const cleanCSS = require('gulp-clean-css');
+const htmlmin = require('gulp-htmlmin');
 
 // 配置任务
 gulp.task('babel', () => {
@@ -71,6 +74,7 @@ gulp.task('browserify', function() {
     }
   推荐规则：airbnb --> eslint-config-airbnb-base
   下载:  npx install-peerdeps --dev eslint-config-airbnb-base
+        npm install --save-dev eslint-config-airbnb-base eslint eslint-plugin-import
   使用：
     {
       "extends": "airbnb-base/legacy" // 旧版 ES5以下
@@ -119,10 +123,41 @@ gulp.task('watch', () => {
   gulp.watch('src/index.html', gulp.series(['html']));
 });
 
+gulp.task('uglify', () => {
+  return gulp
+    .src('./build/js/built.js')
+    .pipe(uglify())
+    .pipe(rename('built.min.js'))
+    .pipe(gulp.dest('./dist/js'));
+});
+
+gulp.task('cleanCss', () => {
+  return gulp
+    .src('./build/css/built.css')
+    .pipe(cleanCSS({ compatibility: 'ie8' }))
+    .pipe(rename('built.min.css'))
+    .pipe(gulp.dest('./dist/css'));
+});
+
+gulp.task('htmlmin', () => {
+  return gulp
+    .src('src/index.html')
+    .pipe(htmlmin({ 
+      collapseWhitespace: true, // 去除空格/换号 
+      removeComments: true, // 移除注释
+    }))
+    .pipe(gulp.dest('dist'));
+});
+
 // 配置统一任务
 gulp.task('dev:js', gulp.series(['eslint', 'babel', 'browserify'])); // 同步顺序执行(同时只能干一件事)
 // gulp.task('dev:js', gulp.parallel(['eslint', 'babel', 'browserify'])); // 异步并行执行（同时干多件事）
 
 gulp.task('dev', gulp.parallel(['dev:js', 'less', 'html']));
 
+// 开发环境指令
 gulp.task('start', gulp.series(['dev', 'watch']));
+
+gulp.task('prod', gulp.parallel(['uglify', 'cleanCss', 'htmlmin']))
+// 生成环境指令
+gulp.task('build', gulp.series(['dev', 'prod']))
