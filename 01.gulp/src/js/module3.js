@@ -3,4 +3,4 @@ function mul(x, y) {
 }
 
 // 统一暴露
-export { mul };
+export default mul;
