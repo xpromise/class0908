@@ -1,0 +1,12 @@
+{
+  "extends": "airbnb-base/legacy",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module"
+  },
+  "rules": {
+    "linebreak-style": 0,
+    "no-console": 0,
+    "eol-last": 0
+  }
+}

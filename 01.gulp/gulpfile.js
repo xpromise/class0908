@@ -22,6 +22,9 @@
 //（所有构建工具都需要使用fs文件读写，而fs在nodejs环境，所以所有构建工具都是基于nodejs平台构建）
 const gulp = require('gulp');
 const babel = require('gulp-babel');
+const browserify = require('gulp-browserify');
+const rename = require('gulp-rename');
+const eslint = require('gulp-eslint');
 
 // 配置任务
 gulp.task('babel', () => {
@@ -32,9 +35,45 @@ gulp.task('babel', () => {
       // 通过pipe方法对可读流数据进行操作
       babel({
         // 将ES6模块化语法编译成Commonjs模块化语法
-        // 将ES6其他语法编译成ES5以下语法
+        // 将ES6其他语法编译成ES5以下语法`
         presets: ['@babel/preset-env']
       })
     )
     .pipe(gulp.dest('./build/js')); // 将可读流数据输出出去
+});
+
+gulp.task('browserify', function() {
+  return gulp
+    .src('./build/js/app.js')
+    .pipe(browserify()) // 将Commonjs模块化语法编译成浏览器能识别的语法
+    .pipe(rename('built.js')) // 重命名
+    .pipe(gulp.dest('./build/js'));
+});
+
+/*
+  定义eslint配置文件： .eslintrc
+  定义eslint忽略文件: .eslintignore
+    {
+      "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module"
+      },
+      "rules": {
+        "semi": 2,
+        "eqeqeq": 2
+      },
+    }
+  推荐规则：airbnb  eslint-config-airbnb-base
+  下载:  npx install-peerdeps --dev eslint-config-airbnb-base
+  使用：
+    {
+      "extends": "airbnb-base/legacy"
+    }
+*/
+gulp.task('eslint', () => {
+  return gulp
+    .src(['src/js/*.js']) // 检查源代码
+    .pipe(eslint()) // 语法检查
+    .pipe(eslint.format())
+    .pipe(eslint.failAfterError());
 });
