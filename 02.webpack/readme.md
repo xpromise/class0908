@@ -49,6 +49,10 @@
   - 引入 plugins
   - 写配置
 
+- 指令
+  - webpack 启动普通配置指令（会有输出文件 build）
+  - webpack-dev-server 启动devServer配置指令（不会输出，在内存中编译打包）
+
 ## loader
 
 - css-loader
@@ -61,6 +65,8 @@
   - 用来处理 html 中的 img
 - file-loader
   - 用来处理其他资源，如：字体
+- eslint-loader
+  - 用来对 js 进行语法检查
 
 ## plugin
 

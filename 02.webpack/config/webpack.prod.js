@@ -13,7 +13,7 @@ module.exports = {
     // 文件名称 -- 入口文件的输出名称
     filename: './js/built.js',
     // 文件路径 -- 所有资源的输出路径
-    path: resolve(__dirname, 'build')
+    path: resolve(__dirname, '../build')
   },
   // loader
   module: {
@@ -80,17 +80,5 @@ module.exports = {
     })
   ],
   // 模式
-  mode: 'development',
-  // 开发服务器
-  // npm i webpack-dev-server -D
-  // 指令：webpack 只能启动普通的配置。 要想启动devServer，要改指令：npx webpack-dev-server
-  // npx运行时会将当前目录node_modules/.bin临时添加为环境变量
-  // npx用来启动本地安装的包
-  // 启动开发服务器
-  devServer: {
-    contentBase: resolve(__dirname, 'build'), // 项目根目录
-    compress: true, // 启动gzip压缩
-    port: 3000,
-    open: true, // 自动打开浏览器
-  }
+  mode: 'production',
 };
