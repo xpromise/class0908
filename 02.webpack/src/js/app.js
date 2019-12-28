@@ -12,7 +12,6 @@ import '../css/iconfont.css';
 import '../less/test1.less';
 import '../less/test2.less';
 
-console.log(add(2, 1));
+console.log(add(2, 2));
 console.log(name, age);
 console.log(mul(3, 5));
-console.log(1 === '1');

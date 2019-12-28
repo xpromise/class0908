@@ -58,6 +58,16 @@ module.exports = {
           outputPath: 'media',
           name: '[hash:10].[ext]'
         }
+      },
+      {
+        test: /\.js$/,
+        // 排除node_modules
+        exclude: /node_modules/,
+        loader: 'eslint-loader',
+        options: {
+          // 自动修复部分 eslint 报的错
+          fix: true
+        }
       }
     ]
   },
@@ -70,5 +80,17 @@ module.exports = {
     })
   ],
   // 模式
-  mode: 'development'
+  mode: 'development',
+  // 开发服务器
+  // npm i webpack-dev-server -D
+  // 指令：webpack 只能启动普通的配置。 要想启动devServer，要改指令：npx webpack-dev-server
+  // npx运行时会将当前目录node_modules/.bin临时添加为环境变量
+  // npx用来启动本地安装的包
+  // 启动开发服务器
+  devServer: {
+    contentBase: resolve(__dirname, 'build'), // 项目根目录
+    compress: true, // 启动gzip压缩
+    port: 3000,
+    open: true, // 自动打开浏览器
+  }
 };

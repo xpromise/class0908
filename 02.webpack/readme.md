@@ -59,6 +59,8 @@
   - 用来处理图片
 - html-loader
   - 用来处理 html 中的 img
+- file-loader
+  - 用来处理其他资源，如：字体
 
 ## plugin
 
