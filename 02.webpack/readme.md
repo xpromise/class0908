@@ -23,5 +23,10 @@
 ## 使用
 
 - 下载
+
   - npm i webpack webpack-cli -g
   - npm i webpack webpack-cli -D
+
+- 运行指令
+  - webpack ./src/js/app.js -o /build/js/built.js --mode=development
+  - webpack ./src/js/app.js -o /build/js/built.js --mode=production
