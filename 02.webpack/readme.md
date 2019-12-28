@@ -37,14 +37,33 @@
   - webpack.config.js
 
 - 配置 loader
+
   - 去官网找 loader https://webpack.docschina.org/loaders
   - 下载 loader
   - 不需要引入，直接写配置
+
 - 配置 plugin
+
   - 去官网找 plugin https://webpack.docschina.org/plugins
   - 下载 plugins
   - 引入 plugins
   - 写配置
+
+## loader
+
+- css-loader
+  - 用来处理 css 文件
+- less-loader
+  - 用来处理 less 文件
+- url-loader
+  - 用来处理图片
+- html-loader
+  - 用来处理 html 中的 img
+
+## plugin
+
+- html-webpack-plugin
+  - 用来处理 html 文件
 
 ## 常见错误
 

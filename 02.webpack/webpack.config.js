@@ -43,13 +43,21 @@ module.exports = {
           // [hash:10]取hash值前10位
           // [ext]后缀名。之前文件是什么后缀名，之后就是什么
           name: '[hash:10].[ext]',
-          outputPath: 'imgs', // path +  outputPath --> build/imgs
-          esModule: false // 解决html img图片出现 [Object Module] 问题
+          outputPath: 'imgs', // path + outputPath --> build/imgs
+          esModule: false // 关闭ES6模块化，使用commonjs，解决html img图片出现 [Object Module] 问题
         }
       },
       {
         test: /\.(html)$/,
         loader: 'html-loader'
+      },
+      {
+        test: /\.(eot|svg|ttf|woff|mp3)$/,
+        loader: 'file-loader',
+        options: {
+          outputPath: 'media',
+          name: '[hash:10].[ext]'
+        }
       }
     ]
   },
