@@ -28,5 +28,26 @@
   - npm i webpack webpack-cli -D
 
 - 运行指令
+
   - webpack ./src/js/app.js -o /build/js/built.js --mode=development
   - webpack ./src/js/app.js -o /build/js/built.js --mode=production
+
+- 定义 webpack 配置文件
+
+  - webpack.config.js
+
+- 配置 loader
+  - 去官网找 loader https://webpack.docschina.org/loaders
+  - 下载 loader
+  - 不需要引入，直接写配置
+
+## 常见错误
+* Module not found: Error: Can't resolve 'style-loader' in 'C:\Users\XiongJian\Desktop\class0908\class0908-git\02.webpack'
+  * 说明 style-loader 没有下载
+  * npm i style-loader -D
+* Module parse failed: Unexpected character '#' (1:0) You may need an appropriate loader to handle this file type,  
+  * 文件类型解析失败，webpack不能识别这种文件类型
+  * 需要使用loader解析
+* Error: Cannot find module 'less'
+  * 找不到模块less，没有下载less
+  * npm i less -D  

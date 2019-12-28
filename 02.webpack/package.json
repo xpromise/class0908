@@ -10,6 +10,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "css-loader": "^3.4.0",
+    "less": "^3.10.3",
+    "less-loader": "^5.0.0",
+    "style-loader": "^1.1.2",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10"
   }
