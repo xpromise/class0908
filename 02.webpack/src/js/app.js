@@ -11,6 +11,7 @@ import '../css/test1.css';
 import '../less/test1.less';
 import '../less/test2.less';
 
+
 console.log(add(2, 1));
 console.log(name, age);
 console.log(mul(3, 5));

@@ -3,16 +3,17 @@
 
 */
 const { resolve } = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   // 入口
   entry: './src/js/app.js',
   // 输出
   output: {
-    // 文件名称
-    filename: 'built.js',
-    // 文件路径
-    path: resolve(__dirname, 'build/js')
+    // 文件名称 -- 入口文件的输出名称
+    filename: './js/built.js',
+    // 文件路径 -- 所有资源的输出路径
+    path: resolve(__dirname, 'build')
   },
   // loader
   module: {
@@ -33,11 +34,33 @@ module.exports = {
         // 当这种文件类型需要一个loader处理，用loader
         // loader: 'less-loader' // 将 Less 编译为 CSS
         use: ['style-loader', 'css-loader', 'less-loader']
+      },
+      {
+        test: /\.(png|jpg|gif)$/,
+        loader: 'url-loader',
+        options: {
+          limit: 8192, // 8 * 1024 = 8 kb 小于8kb以下的图片，会被转化成base64
+          // [hash:10]取hash值前10位
+          // [ext]后缀名。之前文件是什么后缀名，之后就是什么
+          name: '[hash:10].[ext]',
+          outputPath: 'imgs', // path +  outputPath --> build/imgs
+          esModule: false // 解决html img图片出现 [Object Module] 问题
+        }
+      },
+      {
+        test: /\.(html)$/,
+        loader: 'html-loader'
       }
     ]
   },
   // plugins
-  plugins: [],
+  plugins: [
+    new HtmlWebpackPlugin({
+      // 以 ./src/index.html 为模板创建新的html文件
+      // 新文件结构和源文件一样，会自动引入打包生成的资源（js）
+      template: './src/index.html'
+    })
+  ],
   // 模式
   mode: 'development'
 };
