@@ -4,6 +4,9 @@
 */
 const { resolve } = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = {
   // 入口
@@ -11,9 +14,11 @@ module.exports = {
   // 输出
   output: {
     // 文件名称 -- 入口文件的输出名称
-    filename: './js/built.js',
-    // 文件路径 -- 所有资源的输出路径
-    path: resolve(__dirname, '../build')
+    filename: 'js/built.js',
+    // 文件路径 -- 所有资源的输出路径（输出到本地哪个目录）
+    path: resolve(__dirname, '../build'),
+    // 所有资源的引入路径 （资源link、url引入的路径）
+    publicPath: '/'
   },
   // loader
   module: {
@@ -25,15 +30,41 @@ module.exports = {
         // 当这种文件类型需要多个loader处理，用use
         use: [
           // 执行顺序：从下往上，从右往左，从后往前 依次执行
-          'style-loader', // 将js文件中css字符串模块，添加到style标签中生效
-          'css-loader' // 将css文件里面内容以字符串形式作为一个模块，插入js文件中
+          MiniCssExtractPlugin.loader, 
+          'css-loader', // 将css文件里面内容以字符串形式作为一个模块，插入js文件中
+          { // css的兼容性处理
+            loader: 'postcss-loader',
+            options: {
+              ident: 'postcss',
+              plugins: (loader) => [
+                require('postcss-import')({ root: loader.resourcePath }),
+                require('postcss-preset-env')(),
+                require('cssnano')()
+              ]
+            }
+          } 
         ]
       },
       {
         test: /\.less$/,
         // 当这种文件类型需要一个loader处理，用loader
         // loader: 'less-loader' // 将 Less 编译为 CSS
-        use: ['style-loader', 'css-loader', 'less-loader']
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          { // css的兼容性处理
+            loader: 'postcss-loader',
+            options: {
+              ident: 'postcss',
+              plugins: (loader) => [
+                require('postcss-import')({ root: loader.resourcePath }),
+                require('postcss-preset-env')(),
+                require('cssnano')()
+              ]
+            }
+          },
+          'less-loader'
+        ]
       },
       {
         test: /\.(png|jpg|gif)$/,
@@ -77,8 +108,17 @@ module.exports = {
       // 以 ./src/index.html 为模板创建新的html文件
       // 新文件结构和源文件一样，会自动引入打包生成的资源（js）
       template: './src/index.html'
-    })
+    }),
+    new MiniCssExtractPlugin({
+      // 提取ccs成单独文件
+      filename: 'css/[name].css',
+      chunkFilename: 'css/[id].css'
+    }),
+    // 清除output.path中所有文件
+    new CleanWebpackPlugin(),
+    // 压缩css
+    new OptimizeCSSAssetsPlugin()
   ],
   // 模式
-  mode: 'production',
+  mode: 'production'
 };

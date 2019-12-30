@@ -1,9 +1,19 @@
 #box1 {
+  display: flex;
   width: 100px;
   height: 100px;
- background-image: url('../imgs/1.png');
+  background-image: url('../imgs/1.png');
+  animation: move 2s linear infinite;
 
   p {
     color: #F90;
+  }
+}
+
+@keyframes move {
+  0% {}
+
+  100% {
+    transform: translateX(300px);
   }
 }

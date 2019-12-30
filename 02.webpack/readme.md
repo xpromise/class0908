@@ -84,3 +84,6 @@
 - Error: Cannot find module 'less'
   - 找不到模块 less，没有下载 less
   - npm i less -D
+- Error: EPERM: operation not permitted
+  - 操作不被允许，删除文件不能删
+  - 因为文件还被live server引用着，关闭live server
