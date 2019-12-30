@@ -87,3 +87,5 @@
 - Error: EPERM: operation not permitted
   - 操作不被允许，删除文件不能删
   - 因为文件还被live server引用着，关闭live server
+- Invalid configuration object.
+  - 无效配置对象：webpack配置对象写错了（单词/配置写错了）  

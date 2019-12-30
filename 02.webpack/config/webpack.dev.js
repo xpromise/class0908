@@ -93,5 +93,6 @@ module.exports = {
     port: 3000,
     open: true, // 自动打开浏览器
     hot: true // 开启HMR功能
-  }
+  },
+  devtool: 'cheap-module-eval-source-map'
 };

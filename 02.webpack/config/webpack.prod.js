@@ -30,19 +30,20 @@ module.exports = {
         // 当这种文件类型需要多个loader处理，用use
         use: [
           // 执行顺序：从下往上，从右往左，从后往前 依次执行
-          MiniCssExtractPlugin.loader, 
+          MiniCssExtractPlugin.loader,
           'css-loader', // 将css文件里面内容以字符串形式作为一个模块，插入js文件中
-          { // css的兼容性处理
+          {
+            // css的兼容性处理
             loader: 'postcss-loader',
             options: {
               ident: 'postcss',
-              plugins: (loader) => [
+              plugins: loader => [
                 require('postcss-import')({ root: loader.resourcePath }),
                 require('postcss-preset-env')(),
                 require('cssnano')()
               ]
             }
-          } 
+          }
         ]
       },
       {
@@ -52,11 +53,12 @@ module.exports = {
         use: [
           MiniCssExtractPlugin.loader,
           'css-loader',
-          { // css的兼容性处理
+          {
+            // css的兼容性处理
             loader: 'postcss-loader',
             options: {
               ident: 'postcss',
-              plugins: (loader) => [
+              plugins: loader => [
                 require('postcss-import')({ root: loader.resourcePath }),
                 require('postcss-preset-env')(),
                 require('cssnano')()
@@ -95,9 +97,38 @@ module.exports = {
         // 排除node_modules
         exclude: /node_modules/,
         loader: 'eslint-loader',
+        enforce: 'pre', // 优先执行
         options: {
           // 自动修复部分 eslint 报的错
           fix: true
+        }
+      },
+      {
+        test: /\.js$/,
+        exclude: /(node_modules)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              [
+                '@babel/preset-env',
+                {
+                  // polyfill 按需加载
+                  targets: {
+                    edge: '17',
+                    firefox: '60',
+                    chrome: '67',
+                    safari: '11.1',
+                    ie: '9'
+                  },
+                  useBuiltIns: 'usage',
+                  corejs: {
+                    version: 3
+                  }
+                }
+              ]
+            ]
+          }
         }
       }
     ]
@@ -107,7 +138,16 @@ module.exports = {
     new HtmlWebpackPlugin({
       // 以 ./src/index.html 为模板创建新的html文件
       // 新文件结构和源文件一样，会自动引入打包生成的资源（js）
-      template: './src/index.html'
+      template: './src/index.html',
+      minify: {
+        // 压缩html
+        collapseWhitespace: true, // 移除空格
+        removeComments: true, // 移除注释
+        removeRedundantAttributes: true, // 当值匹配默认值时删除属性。
+        removeScriptTypeAttributes: true, // type="text/javascript"从script标签中删除。
+        removeStyleLinkTypeAttributes: true, // type="text/css"从style和link标签中删除。
+        useShortDoctype: true // 使用HTML5 doctype
+      }
     }),
     new MiniCssExtractPlugin({
       // 提取ccs成单独文件
@@ -120,5 +160,17 @@ module.exports = {
     new OptimizeCSSAssetsPlugin()
   ],
   // 模式
-  mode: 'production'
+  mode: 'production',
+  // 源代码映射文件
+  /*
+    基本：source-map
+    前缀: 
+      eval 将source-map文件整合到js中
+      inline 将source-map文件整合到js中
+      cheap 只精确到行
+      module 能将node_modules中的整合进来
+      
+    https://webpack.docschina.org/configuration/devtool/  
+  */
+  devtool: 'source-map'
 };
