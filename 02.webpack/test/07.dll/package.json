@@ -1,0 +1,13 @@
+{
+  "name": "02.tree-shaking",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webpack.config.js",
+  "scripts": {
+    "dll": "webpack --config ./config/webpack.dll.js",
+    "build": "webpack --config ./config/webpack.config.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "sideEffects": [ "*.css", "*.less" ]
+}

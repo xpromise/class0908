@@ -6,7 +6,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const WorkboxPlugin = require('workbox-webpack-plugin');
 
 module.exports = {
   // 入口
@@ -167,7 +168,14 @@ module.exports = {
     new CleanWebpackPlugin(),
     // 压缩css
     new OptimizeCSSAssetsPlugin(),
-    new BundleAnalyzerPlugin()
+    // 性能分析：需要时开启
+    // new BundleAnalyzerPlugin()
+    new WorkboxPlugin.GenerateSW({
+      // 这些选项帮助快速启用 ServiceWorkers
+      // 不允许遗留任何“旧的” ServiceWorkers
+      clientsClaim: true,
+      skipWaiting: true
+    })
   ],
   // 模式
   mode: 'production',
