@@ -13,7 +13,7 @@ module.exports = {
   // 输出
   output: {
     // 文件名称 -- 入口文件的输出名称
-    filename: 'js/built.js',
+    filename: 'js/[name].[contenthash:10].js',
     // 文件路径 -- 所有资源的输出路径（输出到本地哪个目录）
     path: resolve(__dirname, '../build'),
     // 所有资源的引入路径 （资源link、url引入的路径）
@@ -159,8 +159,8 @@ module.exports = {
     }),
     new MiniCssExtractPlugin({
       // 提取ccs成单独文件
-      filename: 'css/[name].css',
-      chunkFilename: 'css/[id].css'
+      filename: 'css/[name].[contenthash:10].css',
+      chunkFilename: 'css/[id].[contenthash:10].css'
     }),
     // 清除output.path中所有文件
     new CleanWebpackPlugin(),
@@ -193,5 +193,11 @@ module.exports = {
     // jquery是包名  jQuery全局变量名称
     // jquery包就不会被webpack打包
     // jquery: 'jQuery'
+  },
+  optimization: {
+    // 分割 node_modules 大于30kb的模块
+    splitChunks: {
+      chunks: 'all'
+    }
   }
 };
