@@ -42,6 +42,10 @@
     "not ie <= 8",
     "not dead"
   ],
+  "sideEffects": [
+    "*.css",
+    "*.less"
+  ],
   "dependencies": {
     "@babel/polyfill": "^7.7.0",
     "core-js": "^3.6.1",

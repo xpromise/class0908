@@ -1,6 +1,5 @@
 /*
   webpack配置文件， 运行指令：webpack
-
 */
 const { resolve } = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -25,72 +24,109 @@ module.exports = {
     rules: [
       // loader的配置
       {
-        // 检测 .css 结尾的文件
-        test: /\.css$/,
-        // 当这种文件类型需要多个loader处理，用use
-        use: [
-          // 执行顺序：从下往上，从右往左，从后往前 依次执行
-          MiniCssExtractPlugin.loader,
-          'css-loader', // 将css文件里面内容以字符串形式作为一个模块，插入js文件中
+        // 以下loader只会命中一个
+        // webpack构建打包速度更快
+        oneOf: [
           {
-            // css的兼容性处理
-            loader: 'postcss-loader',
+            // 检测 .css 结尾的文件
+            test: /\.css$/,
+            // 当这种文件类型需要多个loader处理，用use
+            use: [
+              // 执行顺序：从下往上，从右往左，从后往前 依次执行
+              MiniCssExtractPlugin.loader,
+              'css-loader', // 将css文件里面内容以字符串形式作为一个模块，插入js文件中
+              {
+                // css的兼容性处理
+                loader: 'postcss-loader',
+                options: {
+                  ident: 'postcss',
+                  plugins: loader => [
+                    require('postcss-import')({ root: loader.resourcePath }),
+                    require('postcss-preset-env')(),
+                    require('cssnano')()
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            test: /\.less$/,
+            // 当这种文件类型需要一个loader处理，用loader
+            // loader: 'less-loader' // 将 Less 编译为 CSS
+            use: [
+              MiniCssExtractPlugin.loader,
+              'css-loader',
+              {
+                // css的兼容性处理
+                loader: 'postcss-loader',
+                options: {
+                  ident: 'postcss',
+                  plugins: loader => [
+                    require('postcss-import')({ root: loader.resourcePath }),
+                    require('postcss-preset-env')(),
+                    require('cssnano')()
+                  ]
+                }
+              },
+              'less-loader'
+            ]
+          },
+          {
+            test: /\.(png|jpg|gif)$/,
+            loader: 'url-loader',
             options: {
-              ident: 'postcss',
-              plugins: loader => [
-                require('postcss-import')({ root: loader.resourcePath }),
-                require('postcss-preset-env')(),
-                require('cssnano')()
-              ]
+              limit: 8192, // 8 * 1024 = 8 kb 小于8kb以下的图片，会被转化成base64
+              // [hash:10]取hash值前10位
+              // [ext]后缀名。之前文件是什么后缀名，之后就是什么
+              name: '[hash:10].[ext]',
+              outputPath: 'imgs', // path + outputPath --> build/imgs
+              esModule: false // 关闭ES6模块化，使用commonjs，解决html img图片出现 [Object Module] 问题
+            }
+          },
+          {
+            test: /\.(html)$/,
+            loader: 'html-loader'
+          },
+          {
+            test: /\.(eot|svg|ttf|woff|mp3)$/,
+            loader: 'file-loader',
+            options: {
+              outputPath: 'media',
+              name: '[hash:10].[ext]'
+            }
+          },
+          {
+            test: /\.js$/,
+            exclude: /(node_modules)/,
+            use: {
+              loader: 'babel-loader',
+              options: {
+                presets: [
+                  [
+                    '@babel/preset-env',
+                    {
+                      // polyfill 按需加载
+                      targets: {
+                        edge: '17',
+                        firefox: '60',
+                        chrome: '67',
+                        safari: '11.1',
+                        ie: '9'
+                      },
+                      useBuiltIns: 'usage',
+                      corejs: {
+                        version: 3
+                      }
+                    }
+                  ]
+                ],
+                // 开启babel缓存
+                // webpack构建打包速度(第二次)更快
+                cacheDirectory: true
+              }
             }
           }
         ]
-      },
-      {
-        test: /\.less$/,
-        // 当这种文件类型需要一个loader处理，用loader
-        // loader: 'less-loader' // 将 Less 编译为 CSS
-        use: [
-          MiniCssExtractPlugin.loader,
-          'css-loader',
-          {
-            // css的兼容性处理
-            loader: 'postcss-loader',
-            options: {
-              ident: 'postcss',
-              plugins: loader => [
-                require('postcss-import')({ root: loader.resourcePath }),
-                require('postcss-preset-env')(),
-                require('cssnano')()
-              ]
-            }
-          },
-          'less-loader'
-        ]
-      },
-      {
-        test: /\.(png|jpg|gif)$/,
-        loader: 'url-loader',
-        options: {
-          limit: 8192, // 8 * 1024 = 8 kb 小于8kb以下的图片，会被转化成base64
-          // [hash:10]取hash值前10位
-          // [ext]后缀名。之前文件是什么后缀名，之后就是什么
-          name: '[hash:10].[ext]',
-          outputPath: 'imgs', // path + outputPath --> build/imgs
-          esModule: false // 关闭ES6模块化，使用commonjs，解决html img图片出现 [Object Module] 问题
-        }
-      },
-      {
-        test: /\.(html)$/,
-        loader: 'html-loader'
-      },
-      {
-        test: /\.(eot|svg|ttf|woff|mp3)$/,
-        loader: 'file-loader',
-        options: {
-          outputPath: 'media',
-          name: '[hash:10].[ext]'
-        }
       },
       {
         test: /\.js$/,
@@ -101,34 +137,6 @@ module.exports = {
         options: {
           // 自动修复部分 eslint 报的错
           fix: true
-        }
-      },
-      {
-        test: /\.js$/,
-        exclude: /(node_modules)/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: [
-              [
-                '@babel/preset-env',
-                {
-                  // polyfill 按需加载
-                  targets: {
-                    edge: '17',
-                    firefox: '60',
-                    chrome: '67',
-                    safari: '11.1',
-                    ie: '9'
-                  },
-                  useBuiltIns: 'usage',
-                  corejs: {
-                    version: 3
-                  }
-                }
-              ]
-            ]
-          }
         }
       }
     ]
@@ -176,14 +184,14 @@ module.exports = {
   resolve: {
     // 路径别名： 优点：简化路径写法  缺点：路径没有提示
     alias: {
-      '$css': resolve(__dirname, '../src/css')
-    },
+      $css: resolve(__dirname, '../src/css')
+    }
     // 可省略的文件后缀名
     // extensions: ['.js', '.json', '.jsx']
   },
   externals: {
     // jquery是包名  jQuery全局变量名称
     // jquery包就不会被webpack打包
-    jquery: 'jQuery'
+    // jquery: 'jQuery'
   }
 };
