@@ -100,33 +100,36 @@ module.exports = {
           {
             test: /\.js$/,
             exclude: /(node_modules)/,
-            use: {
-              loader: 'babel-loader',
-              options: {
-                presets: [
-                  [
-                    '@babel/preset-env',
-                    {
-                      // polyfill 按需加载
-                      targets: {
-                        edge: '17',
-                        firefox: '60',
-                        chrome: '67',
-                        safari: '11.1',
-                        ie: '9'
-                      },
-                      useBuiltIns: 'usage',
-                      corejs: {
-                        version: 3
+            use: [
+              'thread-loader', // 开启多线程
+              {
+                loader: 'babel-loader',
+                options: {
+                  presets: [
+                    [
+                      '@babel/preset-env',
+                      {
+                        // polyfill 按需加载
+                        targets: {
+                          edge: '17',
+                          firefox: '60',
+                          chrome: '67',
+                          safari: '11.1',
+                          ie: '9'
+                        },
+                        useBuiltIns: 'usage',
+                        corejs: {
+                          version: 3
+                        }
                       }
-                    }
-                  ]
-                ],
-                // 开启babel缓存
-                // webpack构建打包速度(第二次)更快
-                cacheDirectory: true
+                    ]
+                  ],
+                  // 开启babel缓存
+                  // webpack构建打包速度(第二次)更快
+                  cacheDirectory: true
+                }
               }
-            }
+            ]
           }
         ]
       },
@@ -169,7 +172,7 @@ module.exports = {
     // 压缩css
     new OptimizeCSSAssetsPlugin(),
     // 性能分析：需要时开启
-    // new BundleAnalyzerPlugin()
+    // new BundleAnalyzerPlugin(),
     new WorkboxPlugin.GenerateSW({
       // 这些选项帮助快速启用 ServiceWorkers
       // 不允许遗留任何“旧的” ServiceWorkers

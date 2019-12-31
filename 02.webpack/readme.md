@@ -51,7 +51,7 @@
 
 - 指令
   - webpack 启动普通配置指令（会有输出文件 build）
-  - webpack-dev-server 启动devServer配置指令（不会输出，在内存中编译打包）
+  - webpack-dev-server 启动 devServer 配置指令（不会输出，在内存中编译打包）
 
 ## loader
 
@@ -86,6 +86,31 @@
   - npm i less -D
 - Error: EPERM: operation not permitted
   - 操作不被允许，删除文件不能删
-  - 因为文件还被live server引用着，关闭live server
+  - 因为文件还被 live server 引用着，关闭 live server
 - Invalid configuration object.
-  - 无效配置对象：webpack配置对象写错了（单词/配置写错了）  
+  - 无效配置对象：webpack 配置对象写错了（单词/配置写错了）
+
+## 总结
+
+* 开发环境
+  * HMR 热模块替换
+    * css style-loader
+    * js module.hot.accept
+* 生产环境
+  * 提升打包构建速度
+    * oneOf 让文件只被一个loader处理
+    * cacheDirectory: true 开启babel缓存，让第二次打包速度更快
+    * dll 将react单独打包，之后就不用重复打包react
+    * thread-loader 多线程打包，让babel-loader任务做的更快（问题: 每个线程都有开销 600ms）
+  * 优化构建后代码性能
+    * tree shaking 去除无用/多余js代码
+      * es6模块化和production（用了插件 - 压缩js插件）
+      * package.json  sideEffect: ['*.css']
+    * caching 让资源更好的缓存
+      * hash / chunkhash / contenthash
+    * code splitting 提取公共代码成单独文件，方便复用
+      * 多入口
+      * 单入口 + optimization.splitChunks.chunks + import动态导入    
+    * lazy loading 懒加载  prefetch loading 预加载  
+      * import动态导入
+    * pwa 离线可访问app 
