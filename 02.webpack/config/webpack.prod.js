@@ -6,6 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
   // 入口
@@ -165,7 +166,8 @@ module.exports = {
     // 清除output.path中所有文件
     new CleanWebpackPlugin(),
     // 压缩css
-    new OptimizeCSSAssetsPlugin()
+    new OptimizeCSSAssetsPlugin(),
+    new BundleAnalyzerPlugin()
   ],
   // 模式
   mode: 'production',
