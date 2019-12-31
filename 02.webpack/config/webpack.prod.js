@@ -172,5 +172,18 @@ module.exports = {
       
     https://webpack.docschina.org/configuration/devtool/  
   */
-  devtool: 'source-map'
+  devtool: 'source-map',
+  resolve: {
+    // 路径别名： 优点：简化路径写法  缺点：路径没有提示
+    alias: {
+      '$css': resolve(__dirname, '../src/css')
+    },
+    // 可省略的文件后缀名
+    // extensions: ['.js', '.json', '.jsx']
+  },
+  externals: {
+    // jquery是包名  jQuery全局变量名称
+    // jquery包就不会被webpack打包
+    jquery: 'jQuery'
+  }
 };
