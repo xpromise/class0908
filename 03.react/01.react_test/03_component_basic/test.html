@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8">
   <title>03_component_basic</title>
 </head>
+
 <body>
 
   <div id="example1"></div>
@@ -14,6 +16,54 @@
   <script type="text/javascript" src="../js/babel.min.js"></script>
 
   <script type="text/babel">
+    /*
+      创建组件两种方式：
+        1. 工厂函数组件（简单组件）
+        2. ES6类组件（复杂组件）
+      
+      三个注意事项：
+        1. 组件名首字母必须大写 
+          (如果组件首字符是小写，会当做html同名标签解析，因为没有这个组件标签，所以解析不了，会报错)
+          (如果组件首字符是大写，会当做组件解析)
+        2. 渲染的虚拟DOM元素的标签必须带结束符：自结束标签或双标签  
+          (不能是单标签，没有结束符)
+        3. 如果要渲染多个元素，必须有且只有一个根元素  
+      
+    */
+
+    // 1. 工厂函数组件（简单组件）
+    function FuncComponnt() {
+      console.log(this); // undefined --> 普通调用  'use strict'
+      // 指定组件渲染的内容
+      return <h1>工厂函数组件（简单组件）</h1>;
+      // return <input />;
+      
+      // return <div>
+      //     <ul>
+      //     <li>111</li><li>222</li><li>333</li><li>444</li>
+      //     </ul>
+      //     <p>555</p>
+      //  </div>;
+    }
+
+    // 2. ES6类组件（复杂组件）
+    class ClassComponent extends React.Component {
+      render() {
+        console.log(this); // 实例对象
+        // 指定组件渲染的内容
+        return <h1>ES6类组件（复杂组件）</h1>;
+      }
+    }
+
+    // 渲染到页面上
+    // 组件用法：通过组件标签使用
+
+    // 普通调用函数，得到返回的虚拟DOM对象，在渲染到页面的指定容器中
+    ReactDOM.render(<FuncComponnt />, document.getElementById('example1'));
+    // new调用类，得到实例对象。调用实例对象的render方法，得到返回的虚拟DOM对象，在渲染到页面的指定容器中
+    ReactDOM.render(<ClassComponent />, document.getElementById('example2'));
+
   </script>
 </body>
+
 </html>
