@@ -1,24 +1,117 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8">
   <title>07_component_state</title>
 </head>
+
 <body>
 
-<div id="example"></div>
+  <div id="example"></div>
 
-<script type="text/javascript" src="../js/react.development.js"></script>
-<script type="text/javascript" src="../js/react-dom.development.js"></script>
-<script type="text/javascript" src="../js/babel.min.js"></script>
+  <script type="text/javascript" src="../js/react.development.js"></script>
+  <script type="text/javascript" src="../js/react-dom.development.js"></script>
+  <script type="text/javascript" src="../js/babel.min.js"></script>
 
-<script type="text/babel">
-  /*
+  <script type="text/babel">
+    /*
   需求: 自定义组件, 功能说明如下
     1. 显示h2标题, 初始文本为: 你喜欢我
     2. 点击标题更新为: 我喜欢你
+
+    开发流程：
+    1. 定义静态组件（没有js功能）
+    2. 定义动态组件（加上js功能）
+
+    什么时候使用state？
+      只要用户页面发生更新（变化），就要通过更新state来更新页面变化
+    
+    state的值类型是什么？
+      如果页面有两种变化，一般用 Boolean
+
   */
+
+  // 定义组件
+  /* class Like extends React.Component {
+
+    // new Like() 会自动调用constructor
+    constructor() {
+      super(); // 调用父类的constructor
+      // 初始化state
+      this.state = {
+        isLikeMe: true
+      }
+      // 改变函数的this指向
+      // const newFn = this.handleClick.bind(this); // 不会改变原函数的this，返回一个改变this指向新函数
+      // 覆盖原函数
+      // this.handleClick = newFn;
+      // console.log(this);
+
+      this.handleClick = this.handleClick.bind(this);
+    }
+
+    // 实例对象的方法
+    handleClick(){
+      // React组件方法（除constructor、render外），this都是undefined
+      // console.log(this); // undefined
+
+      // 获取state
+      const { isLikeMe } = this.state;
+
+      // 切换state / 更新state
+      // 只要调用setState方法，就会重新渲染组件（重新调用render）
+      this.setState({
+        isLikeMe: !isLikeMe
+      })
+    }
+
+    render() {
+      // 获取state
+      const { isLikeMe } = this.state;
+      // 在React中绑定事件直接在标签中写，onXxx
+      // return <h1 onClick={() => {}}>你喜欢我</h1>;
+      // 这种好。函数不会反复创建多次
+      // 根据state的值来决定显示的内容
+      return <h1 onClick={this.handleClick}>{isLikeMe ? '你喜欢我' : '我喜欢你'}</h1>;
+    }
+  } */
+
+  class Like extends React.Component {
+    // 初始化state
+    state = {
+      isLikeMe: true
+    }
+
+    // 实例对象的方法
+    handleClick = () => {
+      // 获取state
+      const { isLikeMe } = this.state;
+
+      // 切换state / 更新state
+      // 只要调用setState方法，就会重新渲染组件（重新调用render）
+      this.setState({
+        isLikeMe: !isLikeMe
+      })
+    }
+
+    render() {
+      console.log('render');
+      
+      // 获取state
+      const { isLikeMe } = this.state;
+      // 在React中绑定事件直接在标签中写，onXxx
+      // return <h1 onClick={() => {}}>你喜欢我</h1>;
+      // 这种好。函数不会反复创建多次
+      // 根据state的值来决定显示的内容
+      return <h1 onClick={this.handleClick}>{isLikeMe ? '你喜欢我' : '我喜欢你'}</h1>;
+    }
+  }
+
+  // 渲染组件
+  ReactDOM.render(<Like />, document.getElementById('example'));
+
 </script>
 </body>
-</html>
 
+</html>
