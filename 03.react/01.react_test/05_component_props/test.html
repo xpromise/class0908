@@ -1,26 +1,87 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8">
   <title>04_component_props</title>
 </head>
+
 <body>
 
-<div id="example1"></div>
+  <div id="example1"></div>
 
-<script type="text/javascript" src="../js/react.development.js"></script>
-<script type="text/javascript" src="../js/react-dom.development.js"></script>
-<script type="text/javascript" src="../js/babel.min.js"></script>
+  <script type="text/javascript" src="../js/react.development.js"></script>
+  <script type="text/javascript" src="../js/react-dom.development.js"></script>
+  <script src="../js/prop-types.js"></script>
+  <script type="text/javascript" src="../js/babel.min.js"></script>
 
-<script type="text/babel">
+  <script type="text/babel">
 
-  /*
-需求: 自定义用来显示一个人员信息的组件, 效果如页面. 说明
-  1). 如果性别没有指定, 默认为男
-  2). 如果年龄没有指定, 默认为18
-  */
+    /*
+    需求: 自定义用来显示一个人员信息的组件, 效果如页面. 说明
+      1). 如果性别没有指定, 默认为男
+      2). 如果年龄没有指定, 默认为18
+    */
 
+    const data = {
+      name: 'jack',
+      age: 18,
+      // sex: '男'
+    };
+
+    // 定义组件
+    class Person extends React.Component{
+      // static关键字用来定义类的静态属性/方法
+      // 实例对象获取不到
+      static propTypes = {
+        name: PropTypes.string.isRequired,
+        age: PropTypes.number,
+        sex: PropTypes.string,
+      }
+
+      static defaultProps = {
+        age: 20,
+        sex: '女'
+      }
+      // 不加static，就是用来定义实例对象的属性/方法
+
+      constructor(props) {
+        super(props);
+        // super(props); 就是为了能在 constructor 中获取props（如果不穿就获取不到）
+        console.log(this.props);
+      }
+
+      render() {
+        // 读取props
+        const { name, age, sex } = this.props;
+
+        return <ul>
+          <li>姓名: {name}</li>
+          <li>性别: {sex}</li>
+          <li>年龄: {age}</li>
+        </ul>
+      }
+    }
+
+    /* // 通常要对传入的props进行类型限制和必要性限制
+    Person.propTypes = {
+      // name的值为字符串类型，且必须填
+      name: PropTypes.string.isRequired,
+      age: PropTypes.number,
+      sex: PropTypes.string,
+    }
+
+    // 默认值
+    Person.defaultProps = {
+      age: 20,
+      sex: '女'
+    } */
+
+    // 渲染到页面上
+    // 组件外向组件内传递变化数据：props（以标签属性方式传递数据）
+    // ReactDOM.render(<Person name={data.name} age={data.age} sex={data.sex}/>, document.getElementById('example1'));
+    ReactDOM.render(<Person {...data}/>, document.getElementById('example1'));
 </script>
 </body>
-</html>
 
+</html>
