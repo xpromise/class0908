@@ -7,5 +7,36 @@
 <body>
   <div id="test1"></div>
   <div id="test2"></div>
+  <script src="../js/react.development.js"></script>
+  <script src="../js/react-dom.development.js"></script>
+  <script>
+    /*
+      创建虚拟DOM对象两种方式：
+        1. React自带的方案  React.createElement
+        2. JSX语法: 用来简化创建虚拟DOM对象
+          语法：
+            1. 以 < 开头，会标签语法解析。如果是html同名标签，就解析成同名元素。如果不是，就会当做组件解析。
+            2. 以 { 开头，里面代码会当做js代码解析
+        
+    */
+    // 创建虚拟DOM对象
+    const vDom3 = React.createElement('p', null, 'I Love You');
+    const vDom1 = React.createElement('div', {id: 'title1', className: 'title'}, vDom3);
+    // 将虚拟DOM对象渲染到页面指定容器中
+    ReactDOM.render(vDom1, document.getElementById('test1'));
+  </script>
+  <script src="../js/babel.min.js"></script>
+  <script type="text/babel">
+
+    const content = 'I Love You too';
+
+    // 创建虚拟DOM对象
+    const vDom2 = <div id="title2" className="title">
+      <p>{content}</p>
+    </div>;
+    // 将虚拟DOM对象渲染到页面指定容器中
+    ReactDOM.render(vDom2, document.getElementById('test2'));
+  </script>
+
 </body>
 </html>

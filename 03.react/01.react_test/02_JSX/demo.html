@@ -1,11 +1,52 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8">
   <title>02_JSX_DEMO</title>
 </head>
+
 <body>
   <h2>前端JS框架列表</h2>
   <div id="example1"></div>
+  <script src="../js/react.development.js"></script>
+  <script src="../js/react-dom.development.js"></script>
+  <script src="../js/babel.min.js"></script>
+  <script type="text/babel">
+    // 数据
+    const data = ['jquery', 'boostrap', 'express', 'mysql', 'react'];
+    // const data = [<li>jquery</li>, <li>boostrap</li>, <li>express</li>, <li>mysql</li>, <li>react</li>];
+    /*
+      map 长度不变，值变
+      filter 长度变，值不变
+      reduce 长度变，值也变
+    */
+
+    // map遍历，返回一个新数组，新数组每一项值看遍历的返回值
+    const result = data.map((item, index) => {
+      return <li key={index}>{item}</li>;
+    })
+
+    // 创建虚拟DOM对象
+    // 如果数据是数组，会自动展开
+    // 对象不能渲染
+    const vDom = <ul className="list">
+      {result}
+    </ul>;
+
+    // console.log(vDom);
+    
+    // 渲染到页面上
+    ReactDOM.render(vDom, document.getElementById('example1'));
+    
+    // render方法做了什么事？ 将虚拟DOM对象对应创建真实DOM元素，插入到页面的指定容器中
+    // ReactDOM.render(<ul>
+    //   {
+    //     data.map((item, index) => <li key={index}>{item}</li>)
+    //   }
+    // </ul>, document.getElementById('example1'));
+
+  </script>
 </body>
+
 </html>
