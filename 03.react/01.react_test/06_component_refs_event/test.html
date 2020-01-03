@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8">
   <title>07_component_refs</title>
 </head>
+
 <body>
-<br>
+  <br>
   <div id="example"></div>
 
   <script type="text/javascript" src="../js/react.development.js"></script>
@@ -19,6 +21,61 @@
       2. 点击按钮, 提示第一个输入框中的值
       3. 当第2个输入框失去焦点时, 提示这个输入框中的值
    */
+
+    class Form extends React.Component {
+      /* constructor() {
+        super();
+
+        // React.createRef();每次调用都会创建一个新对象
+        this.createRef = React.createRef();
+        // console.log(this.createRef); // {current: null}
+      } */
+      
+      createRef = React.createRef();
+
+      handleClick = () => {
+        // 提示输入框的内容
+        // console.log(this);
+        // createRef（推荐使用）
+        const value = this.createRef.current.value;
+        alert(value);
+        this.createRef.current.value = '';
+
+        // funcRef
+        // const value = this.funcRef.value;
+        // alert(value);
+        // this.funcRef.value = '';
+
+        // stringRef(即将废弃，不推荐使用)
+        // const value = this.refs.stringRef.value;
+        // alert(value);
+        // this.refs.stringRef.value = '';
+      }
+
+      handleBlur = (event) => {
+        /*
+          如果触发事件的目标元素就是要获取的元素，用event.target
+          反之，就用ref
+        */
+        // console.log(event.target); // 触发事件的目标元素
+        alert(event.target.value);
+        event.target.value = '';
+      }
+
+      render() {
+        return <div>
+          {/* <input type="text" ref="stringRef"/> */}
+          {/* <input type="text" ref={(input) => this.funcRef = input}/> */}
+          <input type="text" ref={this.createRef}/>
+          <button onClick={this.handleClick}>点击提示数据</button>
+          <input type="text" placeholder="失去焦点提示数据" onBlur={this.handleBlur}/>
+        </div>
+      }
+    }
+
+    ReactDOM.render(<Form />, document.getElementById('example'));
+
   </script>
 </body>
+
 </html>

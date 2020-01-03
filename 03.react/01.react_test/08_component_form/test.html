@@ -1,22 +1,125 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8">
   <title>09_form</title>
 </head>
-<body>
-<div id="example"></div>
 
-<script type="text/javascript" src="../js/react.development.js"></script>
-<script type="text/javascript" src="../js/react-dom.development.js"></script>
-<script type="text/javascript" src="../js/babel.min.js"></script>
-<script type="text/babel">
-  /*
+<body>
+  <div id="example"></div>
+
+  <script type="text/javascript" src="../js/react.development.js"></script>
+  <script type="text/javascript" src="../js/react-dom.development.js"></script>
+  <script type="text/javascript" src="../js/babel.min.js"></script>
+  <script type="text/babel">
+    /*
   需求: 自定义包含表单的组件
     1. 界面如下所示
     2. 输入用户名密码后, 点击登陆提示输入信息
     3. 不提交表单
   */
+
+  // 非受控组件：通过ref收集表单数据
+  // 需要操作DOM元素，React认为性能不好。不建议使用ref操作DOM元素
+  /* class Form extends React.Component {
+
+    usernameRef = React.createRef();
+    passwordRef = React.createRef();
+
+    handleSubmit = (e) => {
+      // 禁止表单默认行为
+      e.preventDefault();
+      // 收集表单数据
+      const username = this.usernameRef.current.value;
+      const password = this.passwordRef.current.value;
+      alert(`用户名: ${username}  密码: ${password}`);
+      this.usernameRef.current.value = '';
+      this.passwordRef.current.value = '';
+    }
+
+    render() {
+      return <form action="/" onSubmit={this.handleSubmit}>
+        用户名: <input type="text" ref={this.usernameRef}/>
+        密码: <input type="password" ref={this.passwordRef}/>
+        <input type="submit" value="登录" />
+      </form>
+    }
+  } */
+
+
+  // 使用受控组件方式，收集表单数据
+  // 受控组件：通过state和onChange的方式自动收集表单数据
+  class Form extends React.Component {
+
+    // 初始化状态
+    state = { 
+      username: '',
+      password: ''
+    }
+
+    handleSubmit = (e) => {
+      // 禁止表单默认行为
+      e.preventDefault();
+      // 收集表单数据
+      const { username, password } = this.state; 
+      alert(`用户名: ${username}  密码: ${password}`);
+      // 清空数据
+      // 更新state的值，重新调用render方法
+      this.setState({
+        username: '',
+        password: ''
+      })
+    }
+
+    // 输入用户名触发的事件
+    usernameChange = (e) => {
+      // 获取输入的值
+      const value = e.target.value;
+      // 更新为state
+      this.setState({
+        username: value
+      })
+    }
+
+    passwordChange = (e) => {
+      // 获取输入的值
+      const value = e.target.value;
+      // 更新为state
+      this.setState({
+        password: value
+      })
+    }
+
+    // 高阶函数：执行函数返回值是一个函数
+    // 作用：给内部函数传参
+    // 闭包的典型应用
+    handleChange = (key) => {
+      return (e) => {
+        // 获取输入的值
+        const value = e.target.value;
+        // 更新为state
+        this.setState({
+          // 内部函数通过闭包得到外部函数的参数
+          [key]: value
+        })
+      }
+    }
+
+    render() {
+      const { username, password } = this.state; 
+
+      return <form action="/" onSubmit={this.handleSubmit}>
+        用户名: <input type="text" onChange={this.handleChange('username')} value={username}/>
+        密码: <input type="password" onChange={this.handleChange('password')} value={password}/>
+        <input type="submit" value="登录" />
+      </form>
+    }
+  }
+
+  ReactDOM.render(<Form />, document.getElementById('example'));
+
 </script>
 </body>
+
 </html>
