@@ -16,7 +16,7 @@
   <script type="text/javascript" src="../js/babel.min.js"></script>
   <script type="text/babel">
     /*
-      组件化变化流程（无比重要）：
+      组件化编码流程（无比重要）：
         1. 拆分组件
           按照js功能或用户界面的变化来拆。 默认情况下，最外面是App组件
             App
@@ -36,7 +36,8 @@
             数据展示
             添加数据  
             先实现数据动态展示，在实现其他功能。
-
+          5. 更新state的方法定义在哪？
+            state在哪里，更新的方法就在那里
     */
 
     class App extends React.Component {
@@ -49,13 +50,26 @@
         ]
       }
 
+      // 更新state的方法
+      add = (todo) => {
+        // 原来state
+        const { todoList } = this.state;
+        // 添加新数据
+        // todoList.unshift(todo);
+        // 更新state时要求：不能修改原state
+        // 更新state
+        this.setState({
+          todoList: [todo, ...todoList]
+        })
+      }
+
       render() {
         // 获取状态
         const { todoList } = this.state;
 
         return <div>
           <h1>Todo List</h1>
-          <Add /> 
+          <Add add={this.add} length={todoList.length}/> 
           {/* 使用props，组件外向组件内传递变化数据 */}
           <List todoList={todoList}/>
         </div>
@@ -63,10 +77,32 @@
     }
 
     class Add extends React.Component {
+      // 声明属性的类型和必要性限制
+      static propTypes = {
+        add: PropTypes.func.isRequired,
+        length: PropTypes.number.isRequired
+      }
+
+      inputRef = React.createRef()
+
+      // 添加todo
+      addTodo = () => {
+        // 缓存dom
+        const input = this.inputRef.current;
+
+        const value = input.value.trim();
+        // 如果值为空，就啥也不做
+        if (!value) return;
+
+        this.props.add(value);
+        // 清空输入的值
+        input.value = '';
+      }
+
       render() {
         return <div>
-          <input type="text" />
-          <button>Add #3</button>
+          <input type="text" ref={this.inputRef} />
+          <button onClick={this.addTodo}>Add #{this.props.length}</button>
         </div>
       } 
     }
