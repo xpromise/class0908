@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="example"></div>
+  <script type="text/javascript" src="../js/react.development.js"></script>
+  <script type="text/javascript" src="../js/react-dom.development.js"></script>
+  <script type="text/javascript" src="../js/babel.min.js"></script>
+  <script type="text/babel">
+
+    const box = document.getElementById('example');
+
+    class LifeCycle extends React.Component {
+      state = {
+        opacity: 1
+      }
+
+      componentDidMount() {
+        this.timeId = setInterval(() => {
+          // 获取opacity
+          let { opacity } = this.state;
+          // 递减
+          opacity -= 0.01;
+          if (opacity <= 0) opacity = 1;
+          // 更新state
+          this.setState({
+            opacity
+          })
+        }, 1000 / 60);
+      }
+
+      componentWillUnmount() {
+        // 清除定时器
+        clearInterval(this.timeId);
+      }
+
+      goDie = () => {
+        ReactDOM.unmountComponentAtNode(box)
+      }
+
+      render() {
+        // 解构赋值
+        const { opacity } = this.state;
+
+        return <div>
+          {/* 第一个{}，代表里面写js代码  第二个{}，代表是一个js对象 对象简写语法*/}
+          <h1 style={{opacity}}>React学不会，咋整？</h1>
+          <button onClick={this.goDie}>不活了</button>
+        </div>
+      }
+    }
+
+    ReactDOM.render(<LifeCycle />, box);
+
+  </script>
+</body>
+
+</html>

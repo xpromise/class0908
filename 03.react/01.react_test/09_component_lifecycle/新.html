@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="example"></div>
+  <script type="text/javascript" src="../js/react.development.js"></script>
+  <script type="text/javascript" src="../js/react-dom.development.js"></script>
+  <script type="text/javascript" src="../js/babel.min.js"></script>
+  <script type="text/babel">
+    /*
+      初始化渲染
+        constructor
+        static getDerivedStateFromProps
+          作用：在渲染之前更新state
+            根据props来生成state
+        render
+        componentDidMount
+
+      更新
+        static getDerivedStateFromProps
+        shouldComponentUpdate
+        render
+        getSnapshotBeforeUpdate
+          可以提前操作DOM。操作完后再更新（一般用的很少）
+        componentDidUpdate 
+        
+      卸载
+        componentWillUnmount  
+    */
+
+    class LifeCycle extends React.Component {
+      constructor() {
+        super();
+        console.log('constructor()');
+
+        this.state = {
+          name: 'jack'
+        }
+      }
+
+      static getDerivedStateFromProps(nextProps, prevState) {
+        console.log('static getDerivedStateFromProps()');
+        console.log(nextProps, prevState);
+        
+        return {
+          name: 'rose'
+        }
+      }
+
+      componentDidMount() {
+        console.log('componentDidMount()');
+        setTimeout(() => {
+          this.setState({})
+        }, 1000)
+      }
+
+      shouldComponentUpdate() {
+        console.log('shouldComponentUpdate()');
+        return true;
+      }
+
+      getSnapshotBeforeUpdate() {
+        console.log('getSnapShotBeforeUpdate()');
+        return null;
+      }
+
+      componentDidUpdate() {
+        console.log('componentDidUpdate()');
+      }
+
+      render() {
+        console.log('render()');
+        return <h1>LifeCycle</h1>
+      }
+    }
+
+    ReactDOM.render(<LifeCycle age={18}/>, document.getElementById('example'));
+
+  </script>
+</body>
+
+</html>
