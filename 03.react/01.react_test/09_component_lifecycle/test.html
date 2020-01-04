@@ -1,22 +1,137 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8">
   <title>10_ComponentLife</title>
 </head>
-<body>
-<div id="example"></div>
 
-<script type="text/javascript" src="../js/react.development.js"></script>
-<script type="text/javascript" src="../js/react-dom.development.js"></script>
-<script type="text/javascript" src="../js/babel.min.js"></script>
-<script type="text/babel">
-  /*
+<body>
+  <div id="example"></div>
+
+  <script type="text/javascript" src="../js/react.development.js"></script>
+  <script type="text/javascript" src="../js/react-dom.development.js"></script>
+  <script type="text/javascript" src="../js/babel.min.js"></script>
+  <script type="text/babel">
+    /*
   需求: 自定义组件
     1. 让指定的文本做显示/隐藏的动画
     2. 切换时间为2S
     3. 点击按钮从界面中移除组件界面
    */
+
+   /*
+    初始化渲染：
+      constructor:（只会执行一次）
+        过去：1. 初始化state 2. 绑定函数this 3. 初始化ref
+        现在：没啥用了
+      componentWillMount
+        没啥用，所以即将被废弃（新react版本不能使用）
+      render
+        返回要渲染的虚拟DOM对象
+      componentDidMount:（只会执行一次）
+        在组件渲染完毕触发的。
+        作用：
+          1. 用来发送ajax请求
+          2. 设置定时器
+          3. 绑定事件
+          4. ...
+
+      面试题：为什么请求在  componentDidMount 发送？而不在 constructor componentWillMount？
+        1. 请求只要发送一次。 所以这个函数只能执行一次。而在新版本React，componentWillMount可能会执行多次，所以排除。
+        2. 请求完数据后可能要操作DOM。而 constructor componentWillMount 因为还没有渲染，不能操作DOM，所以排除。
+        3. componentDidMount能让渲染速度更快。如果在 constructor componentWillMount 干活，会影响渲染速度
+
+      更新：
+        1. 父组件渲染导致子组件更新
+          componentWillReceiveProps
+            在此阶段，可以获取父组件传递的props
+            如果子组件state的变化和父组件传递的props有关系。更新state
+            作用： 如果子组件state由父组件传递的props来生成，就要使用当前生命周期函数
+            问题：在新版本中，可能会调用多次。所以被废弃了
+          shouldComponentUpdate
+            性能优化：决定组件是否需要重新渲染
+          componentWillUpdate
+            没啥用。即将被废弃
+          render
+          componentDidUpdate
+            每次更新时需要做一些事。
+        2. 组件调用setState更新
+          shouldComponentUpdate
+          componentWillUpdate
+          render
+          componentDidUpdate
+        3. 组件调用forceUpdate更新
+          componentWillUpdate
+          render
+          componentDidUpdate
+
+       卸载：
+        componentWillUnmount 组件将要卸载
+          做一些收尾工作：
+            1. 清除定时器
+            2. 取消没有结果的ajax请求  xhr.abort()
+            3. 解绑事件(React事件不用解绑。自定义事件)
+            4. ...
+
+        重要生命周期函数：
+          componentDidMount
+          componentWillUnmount
+          shouldComponentUpdate
+        即将废弃：
+          componentWillMount
+          componentWillReceiveProps
+          componentWillUpdate
+   */
+
+  class LifeCycle extends React.Component {
+    constructor() {
+      super();
+      console.log('constructor()');
+    }
+
+    componentWillMount() {
+      console.log('componentWillMount()');
+    }
+
+    componentDidMount() {
+      console.log('componentDidMount()');
+    }
+
+    shouldComponentUpdate() {
+      console.log('shouldComponentUpdate()');
+      // return true; // 更新，重新渲染
+      return false; // 不更新
+    }
+
+    componentWillUpdate() {
+      console.log('componentWillUpdate()');
+    }
+
+    componentDidUpdate() {
+      console.log('componentDidUpdate()');
+    }
+
+    componentWillUnmount() {
+      console.log('componentWillUnmount()');
+    }
+
+    handleClick = () => {
+      // 强制更新，一般不用
+      // this.forceUpdate(() => {});
+      // this.setState({});
+      // 卸载组件
+      ReactDOM.unmountComponentAtNode(document.getElementById('example'));
+    }
+
+    render() {
+      console.log('render()');
+      return <h1 onClick={this.handleClick}>LifeCycle</h1>
+    }
+  }
+
+  ReactDOM.render(<LifeCycle />, document.getElementById('example'));
 </script>
 </body>
+
 </html>
