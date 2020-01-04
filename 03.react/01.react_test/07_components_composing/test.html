@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8">
   <title>05_components_composing</title>
 </head>
+
 <body>
 
   <div id="example"></div>
@@ -13,7 +15,85 @@
   <script type="text/javascript" src="../js/prop-types.js"></script>
   <script type="text/javascript" src="../js/babel.min.js"></script>
   <script type="text/babel">
+    /*
+      组件化变化流程（无比重要）：
+        1. 拆分组件
+          按照js功能或用户界面的变化来拆。 默认情况下，最外面是App组件
+            App
+            Add
+            List
+        2. 实现静态组件
+          将组件全部定义好，样式/结构写完   
+        3. 实现动态组件
+          1. 要不要定义state? 因为用户界面发生了变化，所以要
+          2. state值的类型是什么? 
+            如果是两种变化，用布尔值
+            如果N种，用对象/数组。使用数组方便遍历展示
+          3. state定义在哪里（哪个组件）?
+            如果state只有一个组件使用，就定义在这个组件中
+            如果state有多个组件使用，就定义在它们公共的父组件中
+          4. 完成js功能
+            数据展示
+            添加数据  
+            先实现数据动态展示，在实现其他功能。
+
+    */
+
+    class App extends React.Component {
+      // 初始化状态
+      state = {
+        todoList: [
+          '吃饭~',
+          '睡觉~',
+          '宝郭德纲~'
+        ]
+      }
+
+      render() {
+        // 获取状态
+        const { todoList } = this.state;
+
+        return <div>
+          <h1>Todo List</h1>
+          <Add /> 
+          {/* 使用props，组件外向组件内传递变化数据 */}
+          <List todoList={todoList}/>
+        </div>
+      }
+    }
+
+    class Add extends React.Component {
+      render() {
+        return <div>
+          <input type="text" />
+          <button>Add #3</button>
+        </div>
+      } 
+    }
+
+    class List extends React.Component {
+      // 声明属性的类型和必要性限制
+      static propTypes = {
+        todoList: PropTypes.array.isRequired
+      }
+
+      render() {
+        // 获取props
+        const { todoList } = this.props;
+        return <ul>
+          {
+            // 数据动态展示
+            todoList.map((todo, index) => <li key={index}>{todo}</li>)
+          }
+        </ul>
+      }
+    }
+
+    // 渲染
+    ReactDOM.render(<App />, document.getElementById('example'));
+
 
   </script>
 </body>
+
 </html>
