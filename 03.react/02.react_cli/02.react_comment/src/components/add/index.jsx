@@ -11,7 +11,7 @@ export default class Add extends Component {
     content: ''
   };
 
-  id = 3
+  id = 3;
 
   // 点击按钮，添加评论回调函数
   addComment = e => {

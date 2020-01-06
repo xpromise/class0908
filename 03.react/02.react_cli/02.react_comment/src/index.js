@@ -5,6 +5,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import App from './App';
+import './index.css';
 
 // dom元素的id去 public/index.html 找
 // JSX语法最终要被babel编译成 js 语法 --> React.createElement

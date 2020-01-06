@@ -35,6 +35,14 @@ export default class App extends Component {
     })
   }
 
+  del = (id) => {
+    const { comments } = this.state;
+    // 不能修改原数据
+    this.setState({
+      comments: comments.filter((comment) => comment.id !== id)
+    })
+  }
+
   render() {
     const { comments } = this.state;
 
@@ -51,7 +59,7 @@ export default class App extends Component {
         </header>
         <div className='container'>
           <Add add={this.add}/>
-          <List comments={comments}/>
+          <List comments={comments} del={this.del}/>
         </div>
       </div>
     );
