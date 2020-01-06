@@ -11,7 +11,33 @@ import Add from './components/add';
 import List from './components/list';
 
 export default class App extends Component {
+  state = {
+    comments: [
+      {
+        username: 'laofu',
+        content: 'I Love peihua',
+        id: 1
+      },
+      {
+        username: 'peihua',
+        content: 'I Love yangshuai',
+        id: 2
+      }
+    ]
+  };
+
+  // state在哪，操作state的方法就在哪
+  add = (comment) => {
+    const { comments } = this.state;
+    // 不能修改原数据
+    this.setState({
+      comments: [comment, ...comments]
+    })
+  }
+
   render() {
+    const { comments } = this.state;
+
     return (
       <div>
         <header className='site-header jumbotron'>
@@ -23,9 +49,9 @@ export default class App extends Component {
             </div>
           </div>
         </header>
-        <div className="container">
-          <Add />
-          <List />
+        <div className='container'>
+          <Add add={this.add}/>
+          <List comments={comments}/>
         </div>
       </div>
     );
