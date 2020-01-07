@@ -1,26 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import Search from './components/search';
 import List from './components/list';
 
-export default class App extends Component {
-  state = {
-    searchName: ''
-  }
-
-  // 更新state的方法
-  update = (searchName) => {
-    this.setState({
-      searchName
-    })
-  }
-
-  render() {
-    return (
-      <div className='container'>
-        <Search update={this.update}/>
-        <List searchName={this.state.searchName}/>
-      </div>
-    );
-  }
+// 当组件没有使用生命周期函数、state、ref的时候，就要改成工厂函数组件
+export default function App() {
+  return (
+    <div className='container'>
+      <Search />
+      <List />
+    </div>
+  );
 }

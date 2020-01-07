@@ -1,34 +1,36 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import axios from 'axios';
-import PubSub from 'pubsub-js';
 
 export default class List extends Component {
+  static propTypes = {
+    searchName: PropTypes.string.isRequired
+  };
 
   state = {
     isLoading: false,
     users: []
   };
 
-  componentDidMount() {
-    // 订阅消息
-    PubSub.subscribe('SEARCHNAME', (msg, data) => {
-      // console.log(msg, data);
-      // 接受到search的消息，发送请求
-      // 发送请求之前更新成 loading 状态
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    console.log(nextProps); // 代表最新的props {searchName: 'aaa'}
+    // console.log(this.props); // 代表上一次的props
+
+    // 发送请求之前更新成 loading 状态
     this.setState({
       isLoading: true
     });
     // 发送请求，请求数据
     axios
-      .get('https://api.github.com/search/users', {
+      .get('https://api.github.com/searchssss/users', {
         params: {
-          q: data
+          q: nextProps.searchName
         }
       })
       .then(response => {
         // map方便遍历想要保留的数据
         // console.log(response.data);
-
+        
         const result = response.data.items.map(item => {
           return {
             name: item.login,
@@ -45,14 +47,13 @@ export default class List extends Component {
         });
       })
       .catch(error => {
+
         this.setState({
           isLoading: false
-        });
-
+        })
+        
         alert('网络出现故障~');
       });
-
-    })
   }
 
   render() {
