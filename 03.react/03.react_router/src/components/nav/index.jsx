@@ -8,14 +8,13 @@ import MyNavLink from '../my-nav-link';
   NavLink
     在Link基础上，多一个 active class  
 */
-
 export default function Nav() {
   return (
     <div className='col-xs-2 col-xs-offset-2'>
       <div className='list-group'>
         {/* <MyNavLink to="/about" children={'About'}></MyNavLink> */}
-        <MyNavLink to="/about">About</MyNavLink>
-        <MyNavLink to="/home">Home</MyNavLink>
+        <MyNavLink to='/about'>About</MyNavLink>
+        <MyNavLink to='/home'>Home</MyNavLink>
       </div>
     </div>
   );
