@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>history test</title>
+</head>
+<body>
+  <p><input type="text"></p>
+  <a href="/test1" onclick="return push('/test1')">test1</a><br><br>
+  <button onClick="push('/test2')">push test2</button><br><br>
+  <button onClick="back()">回退</button><br><br>
+  <button onClick="forword()">前进</button><br><br>
+  <button onClick="replace('/test3')">replace test3</button><br><br>
+
+  <script type="text/javascript" src="https://cdn.bootcss.com/history/4.7.2/history.js"></script>
+  <script type="text/javascript">
+    /*
+      history模式和hash模式的区别：
+        1. 兼容性
+          hash模式兼容性好
+          history模式兼容性较差
+        2. 美观
+          hash模式不美观 - 多一个#
+        3. hash模式因为有#，所以不能使用锚点功能  
+    */
+    let history = History.createBrowserHistory() // 方式一  history模式
+    history = History.createHashHistory() // 方式二  hash模式
+    // console.log(history)
+
+    function push (to) {
+      history.push(to)
+      return false
+    }
+
+    function back() {
+      history.goBack()
+    }
+
+    function forword() {
+      history.goForward()
+    }
+
+    function replace (to) {
+      history.replace(to)
+    }
+
+    history.listen((location) => {
+      console.log('请求路由路径变化了', location)
+      if (location.pathname === '/test1') {
+        // 卸载其他组件，加载test1组件
+      } else if (location.pathname === '/test2') {
+        // 卸载其他组件，加载test2组件
+      }
+    })
+  </script>
+</body>
+</html>
