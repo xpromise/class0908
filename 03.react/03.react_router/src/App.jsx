@@ -17,6 +17,12 @@ import {
   Switch 切换。
     正常情况下，可以匹配多个Route
     加了Switch，就只能匹配一个, 从上到下匹配
+  NavLink 更新浏览器历史记录
+  Link
+
+    更新浏览器历史记录有两种方式：
+      NavLink / Link
+      this.props.history.push('/home')
 */
 import Nav from './components/nav';
 import About from './components/about';

@@ -1,0 +1,13 @@
+.slick-slider,
+.slick-list,
+.slick-track {
+  width: 200px;
+  height: 200px;
+}
+
+.slick-slide {
+  display: block;
+  width: 200px;
+  height: 200px;
+  background-color: pink;
+}
