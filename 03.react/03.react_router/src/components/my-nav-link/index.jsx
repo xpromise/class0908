@@ -7,7 +7,7 @@ import './index.css';
 export default function MyNavLink(props) {
   // 工厂函数获取props。（没有state、ref、生命周期）
   // props.children 获取当前组件的子内容
-  console.log(props);
+  // console.log(props);
 
   /* <NavLink
       className='list-group-item'

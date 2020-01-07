@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import {
   BrowserRouter as Router, // 引入 BrowserRouter 重命名为 Router
-  HashRouter ,
+  HashRouter,
   Route,
   Redirect,
   Switch
@@ -12,7 +12,6 @@ import {
   BrowserRouter history模式
   HashRouter hash模式
     Router要求必须在最外面使用。（目的：为了包裹所有组件 --> 为了让其他所有组件都是Router的子组件，这样就能得到history对象）
-
   Route 根据url的变化加载组件  
   Redirect 重定向: 能匹配所有路径，匹配上就修改url地址
   Switch 切换。
