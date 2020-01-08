@@ -7,7 +7,6 @@ import { INCREMENT, DECREMENT } from './action-types';
 // 在reducer中对状态数据进行初始化
 function number(prevState = 0, action) {
   console.log(prevState, action);
-  
   switch (action.type) {
     case INCREMENT:
       return prevState + action.data;

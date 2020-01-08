@@ -13,7 +13,7 @@ export default class App extends Component {
       // 函数中就要重新渲染组件
       // 只会重新渲染App组件
       this.setState({});
-    }) 
+    });
   }
 
   handleChange = e => {
@@ -33,6 +33,29 @@ export default class App extends Component {
     store.dispatch(action);
   };
 
+  decrement = () => {
+    const { value } = this.state;
+    store.dispatch(decrement(value));
+  };
+
+  incrementIffOdd = () => {
+    const number = store.getState();
+    /* if (number % 2 === 1) {
+
+    } */
+    if (number & 1) {
+      const { value } = this.state;
+      store.dispatch(increment(value));
+    }
+  };
+
+  incrementAsync = () => {
+    setTimeout(() => {
+      const { value } = this.state;
+      store.dispatch(increment(value));
+    }, 1000)
+  }
+
   render() {
     // 从redux中，读取状态数据
     // 第一次调用getState，内部会调用reducer函数 (undefined, {type: "@@redux/INITw.d.k.f.8.3.b"})得到初始化状态
@@ -47,9 +70,9 @@ export default class App extends Component {
           <option value='3'>3</option>
         </select>
         <button onClick={this.increment}>+</button>
-        <button>-</button>
-        <button>increment if odd</button>
-        <button>incrememt async</button>
+        <button onClick={this.decrement}>-</button>
+        <button onClick={this.incrementIffOdd}>increment if odd</button>
+        <button onClick={this.incrementAsync}>incrememt async</button>
       </div>
     );
   }
