@@ -1,20 +1,12 @@
 import React, { Component } from 'react';
-
-import store from './redux/store';
+import { connect } from 'react-redux';
 import { increment, decrement } from './redux/actions';
 
-export default class App extends Component {
+// App是UI组件（被包装组件）
+class App extends Component {
   state = {
     value: 1
   };
-
-  componentDidMount() {
-    store.subscribe(() => {
-      // 函数中就要重新渲染组件
-      // 只会重新渲染App组件
-      this.setState({});
-    });
-  }
 
   handleChange = e => {
     this.setState({
@@ -25,41 +17,34 @@ export default class App extends Component {
   increment = () => {
     // 获取select的value值
     const { value } = this.state;
-    // 更新redux的状态数据
-    // 调用actions生成action对象
-    const action = increment(value);
-    // 再调用dispatch方法，触发更新
-    // 内部调用reducer函数生成newState
-    store.dispatch(action);
+    this.props.increment(value);
   };
 
   decrement = () => {
     const { value } = this.state;
-    store.dispatch(decrement(value));
+    this.props.decrement(value);
   };
 
   incrementIffOdd = () => {
-    const number = store.getState();
+    const { number } = this.props;
     /* if (number % 2 === 1) {
 
     } */
     if (number & 1) {
       const { value } = this.state;
-      store.dispatch(increment(value));
+      this.props.increment(value);
     }
   };
 
   incrementAsync = () => {
     setTimeout(() => {
       const { value } = this.state;
-      store.dispatch(increment(value));
-    }, 1000)
-  }
+      this.props.increment(value);
+    }, 1000);
+  };
 
   render() {
-    // 从redux中，读取状态数据
-    // 第一次调用getState，内部会调用reducer函数 (undefined, {type: "@@redux/INITw.d.k.f.8.3.b"})得到初始化状态
-    const number = store.getState();
+    const { number } = this.props;
 
     return (
       <div>
@@ -77,3 +62,42 @@ export default class App extends Component {
     );
   }
 }
+
+// 将redux管理的state，以props方式传递给UI组件
+// 作用：让容器组件给UI组件传递redux管理的状态数据
+/* const mapStateToProps = state => {
+  // state就是 store.getState() 返回值
+  return {
+    number: state
+  };
+}; */
+
+// 将更新redux状态数据的方法，以props方式传递给UI组件
+// 作用：让容器组件给UI组件传递更新redux状态数据的方法
+/* const mapDispatchToProps = dispatch => {
+  // dispatch 就是 store.dispatch
+  return {
+    increment: data => {
+      // 更新
+      const action = increment(data);
+      dispatch(action);
+    },
+    decrement: data => {
+      dispatch(decrement(data));
+    }
+  };
+}; */
+
+// AppContainer是容器组件(包装组件)
+// const AppContainer = connect(mapStateToProps, mapDispatchToProps)(App);
+const AppContainer = connect(
+  // 状态数据
+  state => ({ number: state }), 
+  // 更新状态数据的方法
+  {
+    increment,
+    decrement
+  }
+)(App);
+
+export default AppContainer;

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    let arr = [];
+    for (let index = 0; index < 10000; index++) {
+      arr.push(Math.round(Math.random() * 10000));
+    }
+
+    function quickSort(arr) {
+      const length = arr.length;
+      // 当数组长度小于等于1时，不需要进行排序
+      if (length <= 1) return arr; 
+      // 取出一个基准值（中间数）
+      const index = Math.floor(length / 2)
+      const value = arr.splice(index, 1)[0];
+      // 定义数组
+      const leftArr = [];
+      const rightArr = [];
+      // 遍历数组，小左 大右
+      for (let index = 0; index < arr.length; index++) {
+        const element = arr[index];
+        if (element < value) {
+          leftArr.push(element);
+        } else {
+          rightArr.push(element);
+        }
+      }
+      // 对左边/右边数组 分别在进行快速排序
+      const newLeftArr = quickSort(leftArr);
+      const newRightArr = quickSort(rightArr);
+      // 从左到右 合并成一个数组
+      return newLeftArr.concat([value], newRightArr);
+    }
+    
+    const start = performance.now();
+    /* for (let i = 0; i < arr.length; i++) {
+      for (let j = 0; j < arr.length - i - 1; j++) {
+        let temp;
+        if (arr[j] > arr[j + 1]) {
+          temp = arr[j + 1];
+          arr[j + 1] = arr[j];
+          arr[j] = temp;
+        }
+      }
+    } */
+    arr = quickSort(arr);
+    const end = performance.now();
+    console.log(end - start); // 190.43499999679625
+    console.log(arr);
+  </script>
+</body>
+
+</html>
