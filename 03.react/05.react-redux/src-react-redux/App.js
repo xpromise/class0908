@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { increment, decrement, incrementAsync } from './redux/actions';
+import { increment, decrement } from './redux/actions';
 
 // App是UI组件（被包装组件）
 class App extends Component {
@@ -37,8 +37,10 @@ class App extends Component {
   };
 
   incrementAsync = () => {
-    const { value } = this.state;
-    this.props.incrementAsync(value);
+    setTimeout(() => {
+      const { value } = this.state;
+      this.props.increment(value);
+    }, 1000);
   };
 
   render() {
@@ -95,8 +97,7 @@ const AppContainer = connect(
   // 更新状态数据的方法
   {
     increment,
-    decrement,
-    incrementAsync
+    decrement
   }
 )(App);
 
