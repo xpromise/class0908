@@ -1,0 +1,7 @@
+.del-btn {
+  border: 1px solid #000;
+  background-color: transparent;
+  outline: none;
+  width: 50px;
+  border-radius: 5px;
+}
