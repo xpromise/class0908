@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 import withForm from '../with-form';
 
-@withForm({ title: '用户注册' })
 class Register extends Component {
   /* state = {
     username: '',
@@ -25,25 +24,30 @@ class Register extends Component {
       });
     };
   }; */
+
   render() {
     const { handleChange, handleSubmit } = this.props;
 
     return (
-      <form onSubmit={handleSubmit}>
-        用户名: <input type='text' onChange={handleChange('username')} />
-        <br />
-        密码:
-        <input type='password' onChange={handleChange('password')} />
-        <br />
-        确认密码:
-        <input type='password' onChange={handleChange('rePassword')} />
-        <br />
-        <input type='submit' value='注册' />
-      </form>
+      <div>
+        <h1>用户注册</h1>
+        <form onSubmit={handleSubmit}>
+          用户名: <input type='text' onChange={handleChange('username')} />
+          <br />
+          密码:
+          <input type='password' onChange={handleChange('password')} />
+          <br />
+          确认密码:
+          <input type='password' onChange={handleChange('rePassword')} />
+          <br />
+          <input type='submit' value='注册' />
+        </form>
+      </div>
     );
   }
 }
 
-// const NewComp = withForm({ title: '用户注册' })(Register);
-// export default NewComp;
-export default Register;
+
+const NewComp = withForm(Register);
+
+export default NewComp;
