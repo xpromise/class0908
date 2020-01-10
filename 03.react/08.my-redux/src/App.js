@@ -39,7 +39,7 @@ export default class App extends Component {
   };
 
   incrementIffOdd = () => {
-    const number = store.getState();
+    const { number } = store.getState();
     /* if (number % 2 === 1) {
 
     } */
@@ -53,12 +53,12 @@ export default class App extends Component {
     setTimeout(() => {
       const { value } = this.state;
       store.dispatch(increment(value));
-    }, 1000)
-  }
+    }, 1000);
+  };
 
   render() {
     // 从redux中，读取状态数据
-    const number = store.getState();
+    const { number } = store.getState();
 
     return (
       <div>

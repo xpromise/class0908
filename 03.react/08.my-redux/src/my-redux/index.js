@@ -1,5 +1,5 @@
 /**
- * redux向外暴露什么？ { createStore }
+ * redux向外暴露什么？ { createStore, combineReducers }
  */
 
 /**
@@ -48,4 +48,42 @@ export function createStore(reducers) {
     dispatch,
     subscribe
   };
+}
+
+
+/**
+ * 整合多个reducer函数成一个
+ * @param {object} reducersObj 
+ * @return reducer 整合后的reducer函数
+ */
+export function combineReducers(reducersObj) {
+  // reducersObj  --> { number: numberReducer, user: userReducer }
+  // 将来prevState一定会作为对象实现
+  return function (prevState = {}, action) {
+    /*
+      返回一个新状态：{ 
+        number: numberReducer(prevState.number, action), 
+        user: userReducer(prevState.user, action)
+      }
+
+      prevState --> { 
+        number: numberReducer(prevState, action), 
+        user: userReducer(prevState, action)
+      }
+    */
+    // 初始化要返回的新状态数据
+    const currentState = {};
+    // 提取所有属性名： ['number', 'user']
+    const keys = Object.keys(reducersObj);
+    // 遍历 keys
+    for (let i = 0; i < keys.length; i++) {
+      // 取出属性名: number \ user
+      const key = keys[i];
+      // 获取属性值: reducer函数
+      const reducer = reducersObj[key];
+      currentState[key] = reducer(prevState[key], action);
+    }
+
+    return currentState;
+  }
 }
