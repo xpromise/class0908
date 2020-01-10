@@ -50,16 +50,15 @@ export function createStore(reducers) {
   };
 }
 
-
 /**
  * 整合多个reducer函数成一个
- * @param {object} reducersObj 
+ * @param {object} reducersObj
  * @return reducer 整合后的reducer函数
  */
 export function combineReducers(reducersObj) {
   // reducersObj  --> { number: numberReducer, user: userReducer }
   // 将来prevState一定会作为对象实现
-  return function (prevState = {}, action) {
+  return function(prevState = {}, action) {
     /*
       返回一个新状态：{ 
         number: numberReducer(prevState.number, action), 
@@ -85,5 +84,5 @@ export function combineReducers(reducersObj) {
     }
 
     return currentState;
-  }
+  };
 }
